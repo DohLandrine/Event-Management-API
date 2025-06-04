@@ -6,17 +6,17 @@ const attendeeSchema = new Schema(
     {
         name : {
             type: String,
-            require: true
+            required: true
         },
         email: {
             type: String,
-            require: true
+            required: true
         },
         event_id: {
             type: String,
-            require: true
+            required: true
         }
     }
 );
-
-module.exports = attendeeSchema;
+const attendeeModel = mongoose.model('attendee', attendeeSchema);
+module.exports = attendeeModel;

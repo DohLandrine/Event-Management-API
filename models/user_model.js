@@ -5,13 +5,14 @@ const userSchema = new Schema(
     {
         name : {
             type: String,
-            require: true
+            required: true
         },
-        email: {
+        passwordu: {
             type: String,
-            require: true
+            required: true
         }
     }
 );
 
-module.exports = userSchema;
+const userModel = mongoose.model('user', userSchema);
+module.exports = userModel;

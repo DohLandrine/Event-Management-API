@@ -5,7 +5,7 @@ const eventSchema = new Schema(
     {
         name : {
             type: String,
-            require: true
+            required: true
         },
         date: {
             type: String, // e.g., '2025-06-10'
@@ -19,14 +19,14 @@ const eventSchema = new Schema(
         },
         location: {
             type: String,
-            require: true
+            required: true
         },
         description: {
             type: String,
-            require: true
+            required: true
         },
         organizer : {
-            require : true,
+            required : true,
             type: String
         }
     }
