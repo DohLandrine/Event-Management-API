@@ -60,4 +60,26 @@ router.get('/get-event-by-id/:id', (request,response,next) => {
     ).catch(next);
 });
 
+router.get('/search-by-location',async(request, response, next)=> {
+    try{
+        const {date, location} = request.query;
+        const filter = {};
+
+        if(date){
+            filter.date = date; // remember that it is the YY/MM/DD format
+        }
+
+        if(location){
+            filter.location = {$regex: location, $options: 'i'}
+        }
+
+        const events = await eventModel.find(filter).populate('organizer','username');
+        response.json(events);
+    }catch(error){
+        console.log(error);
+        response.status(500).json({message: 'Server Error'});
+    }
+    
+});
+
 module.exports = router;
