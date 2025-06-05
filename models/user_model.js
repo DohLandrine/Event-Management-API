@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const eventModel = require("./event_model"); 
 
 const userSchema = new Schema(
     {
@@ -10,9 +11,15 @@ const userSchema = new Schema(
         password: {
             type: String,
             required: true
-        }
+        },
+        registeredEvents: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "event", // Reference to the Event model
+            }
+        ],
     }
 );
 
-const userModel = mongoose.model('user', userSchema);
+const userModel = mongoose.model("users", userSchema);
 module.exports = userModel;
