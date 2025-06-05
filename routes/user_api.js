@@ -2,6 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/user_model");
 const bcrypt = require("bcryptjs");
+const eventModel = require("../models/event_model");
 const userRouter = express.Router();
 
 const verifyToken = (request, response, next) => {
@@ -84,5 +85,5 @@ const verifyToken = (request, response, next) => {
       response.status(500).send(error.message);
     }
   });
-  
+
   module.exports = userRouter;

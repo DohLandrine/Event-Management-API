@@ -1,5 +1,6 @@
 const express = require('express');
 const eventModel = require("../models/event_model");
+const userModel = require("../models/user_model");
 
 const router = express.Router();
 
@@ -12,10 +13,15 @@ router.post('/create-event', (request, respond, next) => {
 });
 
 router.delete('/delete-event/:id',(request, response, next)=>{
+    eventId = request.params.id;
     eventModel.findByIdAndDelete(
-        request.params.id
+        eventId
     ).then(
-        (event) => {
+        async (event) => {
+            await userModel.updateMany(
+                { registeredEvents: eventId },           // Find users with the event ID in registeredEvents
+                { $pull: { registeredEvents: eventId } } // Remove the event ID from the array
+            );
             response.send(event);
         }
     ).catch(next);
