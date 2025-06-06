@@ -5,11 +5,12 @@ const mongoose = require('mongoose');
 const dotenv = require("dotenv");
 const authRouter = require("./routes/auth_api");
 const userRouter = require("./routes/user_api");
+const cors = require("cors");
 
 dotenv.config();
 const app = express();
-const port = 3000;
-// mongodb+srv://Doh_Landrine:rseVbZtlUG94z5Tf@cluster0.ts9x6rc.mongodb.net/event-management?retryWrites=true&w=majority&appName=Cluster0
+const port = process.env.PORT || 3000;
+
 // Connect to mongodb
 mongoose.connect(process.env.MONGO_URI,
 ).then(() => {
@@ -19,6 +20,7 @@ mongoose.connect(process.env.MONGO_URI,
 });
 mongoose.Promise = global.Promise; // mongoose promise is deprecated.
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/api/event', eventRouter);
