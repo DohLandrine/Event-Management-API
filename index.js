@@ -9,7 +9,7 @@ const userRouter = require("./routes/user_api");
 dotenv.config();
 const app = express();
 const port = 3000;
-
+// mongodb+srv://Doh_Landrine:rseVbZtlUG94z5Tf@cluster0.ts9x6rc.mongodb.net/event-management?retryWrites=true&w=majority&appName=Cluster0
 // Connect to mongodb
 mongoose.connect(process.env.MONGO_URI,
 ).then(() => {

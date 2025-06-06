@@ -21,5 +21,6 @@ const userSchema = new Schema(
     }
 );
 
+// creating a table
 const userModel = mongoose.model("users", userSchema);
 module.exports = userModel;

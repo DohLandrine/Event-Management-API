@@ -5,11 +5,14 @@ const userModel = require("../models/user_model");
 
 const authRouter = express.Router();
 
+// create a new user
 authRouter.post("/create-user", async (request, response) => {
   const name = request.body.name;
   const password = request.body.password;
 
+  // encrypting the password
   const hashedPassword = await bcrypt.hash(password, 10);
+
   userModel.findOne({ name: name }).then((user) => {
     if (user) {
       response.status(400).send("User already exists");
@@ -26,8 +29,9 @@ authRouter.post("/create-user", async (request, response) => {
   });
 });
 
+  // login
   authRouter.post("/login", async (request, response) => {
-    console.log("Login route hit");
+    //console.log("Login route hit");
     const name = request.body.name;
     const password = request.body.password;
 

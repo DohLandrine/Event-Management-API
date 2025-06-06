@@ -4,6 +4,7 @@ const userModel = require("../models/user_model");
 
 const router = express.Router();
 
+// creating a new event
 router.post('/create-event', (request, respond, next) => {
    eventModel.create(request.body).then(
     (event) => {
@@ -12,8 +13,9 @@ router.post('/create-event', (request, respond, next) => {
    ).catch(next); 
 });
 
+// deleting an event
 router.delete('/delete-event/:id',(request, response, next)=>{
-    eventId = request.params.id;
+    const eventId = request.params.id;
     eventModel.findByIdAndDelete(
         eventId
     ).then(
@@ -27,6 +29,7 @@ router.delete('/delete-event/:id',(request, response, next)=>{
     ).catch(next);
 });
 
+// modifying an event
 router.put('/modify-event/:id', (request, response, next) => {
     eventModel.findByIdAndUpdate({
         _id: request.params.id}, request.body
@@ -42,7 +45,8 @@ router.put('/modify-event/:id', (request, response, next) => {
     }).catch(next);
 });
 
-router.get('/get-all-event',(request, response, next) => {
+// getting all events
+router.get('/get-all-events',(request, response, next) => {
     eventModel.find().then(
         (events) => {
             response.send(events);
@@ -50,17 +54,19 @@ router.get('/get-all-event',(request, response, next) => {
     ).catch(next);
 });
 
+// get an event by id
 router.get('/get-event-by-id/:id', (request,response,next) => {
     eventModel.findById(
         {_id : request.params.id}
     ).then(
         (foundEvent) => {
-            response.send(foundEvent)
+            response.send(foundEvent);
         }
     ).catch(next);
 });
 
-router.get('/search-by-location',async(request, response, next)=> {
+// searching an event by location and or date
+router.get('/search',async(request, response, next)=> {
     try{
         const {date, location} = request.query;
         const filter = {};
@@ -73,10 +79,10 @@ router.get('/search-by-location',async(request, response, next)=> {
             filter.location = {$regex: location, $options: 'i'}
         }
 
-        const events = await eventModel.find(filter).populate('organizer','username');
-        response.json(events);
+        const events = await eventModel.find(filter);
+        response.send(events);
     }catch(error){
-        console.log(error);
+        // console.log(error);
         response.status(500).json({message: 'Server Error'});
     }
     
