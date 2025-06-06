@@ -11,7 +11,12 @@ const app = express();
 const port = 3000;
 
 // Connect to mongodb
-mongoose.connect('mongodb://localhost/event-management');
+mongoose.connect(process.env.MONGO_URI,
+).then(() => {
+    console.log("Connected to MongoDB");
+}).catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+});
 mongoose.Promise = global.Promise; // mongoose promise is deprecated.
 
 app.use(bodyParser.json());
@@ -26,9 +31,8 @@ app.use(function(error, request, response, next){
     response.status(422).send({
         error : error.message
     }) 
-    
-});
 
+});
 
 app.listen(port, () => {
     console.log(`server started at http://localhost:${port}`);

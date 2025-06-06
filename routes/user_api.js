@@ -37,8 +37,20 @@ const verifyToken = (request, response, next) => {
           return response.status(400).send("Already registered for this event");
         }
 
+        // Find the event to ensure it exists
+        const event = await eventModel.findById(eventId);
+        if (!eventId) {
+          return response.status(404).send("Event not found");
+        }
+       
+        // add the event to the user's registeredEvents array
         user.registeredEvents.push(eventId);
         await user.save();
+
+        // add the user to the event's attendees array
+        event.attendees.push(userId);
+        await event.save();
+
         response.send("RSVP successful");
       } catch (error) {
         response.send(error.message);
@@ -46,7 +58,7 @@ const verifyToken = (request, response, next) => {
     }
   );
 
-  // get all event RSVP for
+  // get all event RSVPed for
   userRouter.get("/rsvp-events", verifyToken, async (request, response) => {
     const userId = request.userId;
 
@@ -63,7 +75,7 @@ const verifyToken = (request, response, next) => {
   }
   );
 
-  // Unrsvp for an event
+  // Unrsvp fo an event
   userRouter.patch("/unrsvp/:eventId", verifyToken, async (request, response) => {
     const eventId = request.params.eventId;
     const userId = request.userId;
