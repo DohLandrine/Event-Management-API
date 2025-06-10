@@ -44,7 +44,7 @@ authRouter.post("/create-user", async (request, response) => {
           const token = jwt.sign({ id: user._id }, "secret_key", {
             expiresIn: "300h",
           });
-          response.json({ token: token });
+          response.json({ token: token , id: user._id, name: user.name });
         } else {
           response.status(400).send("Invalid password");
         }
